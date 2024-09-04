@@ -1,11 +1,8 @@
-import heapq
 import threading
 import time
 from collections import defaultdict
-from datetime import datetime
-
-from entity.EnumClasses import OrderType
-from entity.OrderBook import OrderBook
+from typing import List
+from entity.impl.OrderBookImpl import OrderBook
 
 
 class OrderMatcherService:
@@ -21,12 +18,18 @@ class OrderMatcherService:
                 self.order_book.match_order(symbol)
                 time.sleep(1)  # Wait 1 second before trying to match again
                 self.order_book.print_status('APPL')
+                self.order_book.print_status('GOOGL')
+                print(f" Broker booked profit = {self.order_book.broker_profit}")
 
         # Create and start a new thread for matching orders for the specified symbol
         if symbol not in self.matching_threads:
             thread = threading.Thread(target=match_loop, daemon=True)
             self.matching_threads[symbol] = thread
             thread.start()
+
+    def start_matching_for_symbols(self, symbols: List[str]):
+        for symbol in symbols:
+            self.start_matching(symbol)
 
     def stop_matching(self):
         """Stop all matching threads."""

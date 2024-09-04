@@ -1,8 +1,8 @@
 import uuid
 
-from entity.OrderBook import OrderBook
+from entity.impl.OrderBookImpl import OrderBook
 from entity.User import User
-from entity.UserDirectory import UserDirectory
+from entity.impl.UserDirectoryImpl import UserDirectory
 
 
 class UserManagementService:
@@ -13,7 +13,7 @@ class UserManagementService:
     def add_user(self, name: str, email: str, phone: str):
         user = User(name, email, phone)
         self.user_directory.add_user(user)
-        return user.id  # Return the user's ID for reference
+        return user  # Return the user
 
     def delete_user(self, user_id: uuid.UUID):
         user = self.user_directory.find_user_by_id(user_id)
